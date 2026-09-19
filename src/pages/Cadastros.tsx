@@ -29,6 +29,7 @@ import {
   Promotor,
 } from '@/services/promotores'
 import { useRealtime } from '@/hooks/use-realtime'
+import { useAuth } from '@/hooks/use-auth'
 import { Plus, Trash2 } from 'lucide-react'
 
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })

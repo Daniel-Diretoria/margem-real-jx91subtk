@@ -26,6 +26,7 @@ import {
 } from '@/services/contasReceber'
 import { getClientes, Cliente } from '@/services/clientes'
 import { useRealtime } from '@/hooks/use-realtime'
+import { useAuth } from '@/hooks/use-auth'
 import { Plus, Check } from 'lucide-react'
 
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
