@@ -22,6 +22,8 @@ interface LinhaExtrato {
   descricao: string
   valor: number
   tipo: 'entrada' | 'saida'
+  categoria?: string
+  cliente?: string
 }
 
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -56,7 +58,7 @@ function parseArquivo(texto: string): LinhaExtrato[] {
   for (const linha of trimmed.split(/\r?\n/)) {
     const parts = linha.split(/[;,\t]/).map((p) => p.trim())
     if (parts.length < 3) continue
-    const [d, desc, val] = parts
+    const [d, desc, val, cat, cli] = parts
     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(d) && !/^\d{4}-\d{2}-\d{2}$/.test(d)) continue
     let data = d
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(d)) {
@@ -70,6 +72,8 @@ function parseArquivo(texto: string): LinhaExtrato[] {
       descricao: desc,
       valor: Math.abs(valor),
       tipo: valor >= 0 ? 'entrada' : 'saida',
+      categoria: cat || undefined,
+      cliente: cli || undefined,
     })
   }
   return linhas
@@ -103,8 +107,21 @@ export default function ImportarExtrato() {
     const texto = await file.text()
     const parsed = parseArquivo(texto)
     setLinhas(parsed)
-    setCatPorLinha({})
-    setCliPorLinha({})
+    // pré-classifica por nome de categoria/cliente vindos no CSV
+    const catInicial: Record<number, string> = {}
+    const cliInicial: Record<number, string> = {}
+    parsed.forEach((l, i) => {
+      if (l.categoria) {
+        const c = categorias.find((x) => x.nome.toLowerCase() === l.categoria!.trim().toLowerCase())
+        if (c) catInicial[i] = c.id
+      }
+      if (l.cliente) {
+        const cl = clientes.find((x) => x.nome.toLowerCase() === l.cliente!.trim().toLowerCase())
+        if (cl) cliInicial[i] = cl.id
+      }
+    })
+    setCatPorLinha(catInicial)
+    setCliPorLinha(cliInicial)
     if (parsed.length === 0) {
       setResultado(
         'Nenhuma linha reconhecida. Formatos aceitos: CSV (data;descrição;valor) ou OFX.',
