@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T19:13:30.193Z",
+  "generatedAt": "2026-09-19T19:24:14.813Z",
   "collections": [
     {
       "name": "users",
@@ -29,19 +29,531 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
         "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)",
         "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''"
+      ]
+    },
+    {
+      "name": "plano_contas",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "receita",
+            "despesa"
+          ]
+        },
+        {
+          "name": "categoria",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "subcategoria",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "linha_dre",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "receita_bruta",
+            "deducoes",
+            "custos",
+            "despesas_operacionais",
+            "juros",
+            "outras"
+          ]
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_plano_owner ON plano_contas (owner)"
+      ]
+    },
+    {
+      "name": "clientes",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "contato",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ativo",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_clientes_owner ON clientes (owner)"
+      ]
+    },
+    {
+      "name": "promotores",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "cargo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "promotor",
+            "lider"
+          ]
+        },
+        {
+          "name": "salario",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "encargos",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "beneficios",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cliente",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "clientes"
+        },
+        {
+          "name": "ativo",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_promotores_owner ON promotores (owner)"
+      ]
+    },
+    {
+      "name": "lancamentos",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "valor",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "entrada",
+            "saida"
+          ]
+        },
+        {
+          "name": "categoria",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "plano_contas"
+        },
+        {
+          "name": "cliente",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "clientes"
+        },
+        {
+          "name": "origem",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "manual",
+            "extrato"
+          ]
+        },
+        {
+          "name": "conciliado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_lanc_owner_data ON lancamentos (owner, data)"
+      ]
+    },
+    {
+      "name": "contas_receber",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "cliente",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "clientes"
+        },
+        {
+          "name": "valor",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "vencimento",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "previsto",
+            "realizado",
+            "cancelado"
+          ]
+        },
+        {
+          "name": "data_recebimento",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_receber_owner_venc ON contas_receber (owner, vencimento)"
+      ]
+    },
+    {
+      "name": "contas_pagar",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && owner = @request.auth.id",
+        "view": "@request.auth.id != '' && owner = @request.auth.id",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != '' && owner = @request.auth.id",
+        "delete": "@request.auth.id != '' && owner = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "owner",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "valor",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "vencimento",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "previsto",
+            "realizado",
+            "cancelado"
+          ]
+        },
+        {
+          "name": "categoria",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "plano_contas"
+        },
+        {
+          "name": "data_pagamento",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate"
+          ]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_pagar_owner_venc ON contas_pagar (owner, vencimento)"
       ]
     }
   ]
