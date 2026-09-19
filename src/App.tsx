@@ -13,6 +13,9 @@ import ContasReceber from '@/pages/ContasReceber'
 import ContasPagar from '@/pages/ContasPagar'
 import Cadastros from '@/pages/Cadastros'
 import ImportarExtrato from '@/pages/ImportarExtrato'
+import DREPage from '@/pages/DRE'
+import PrevistoRealizado from '@/pages/PrevistoRealizado'
+import Rateio from '@/pages/Rateio'
 import NotFound from '@/pages/NotFound'
 
 // ONLY IMPORT AND RENDER WORKING PAGES, NEVER ADD PLACEHOLDER COMPONENTS OR PAGES IN THIS FILE
@@ -38,6 +41,9 @@ const AppRoutes = () => {
           <Route path="/contas-a-pagar" element={<ContasPagar />} />
           <Route path="/cadastros" element={<Cadastros />} />
           <Route path="/importar-extrato" element={<ImportarExtrato />} />
+          <Route path="/dre" element={<DREPage />} />
+          <Route path="/previsto-realizado" element={<PrevistoRealizado />} />
+          <Route path="/rateio" element={<Rateio />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />

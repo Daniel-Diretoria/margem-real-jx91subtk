@@ -9,10 +9,16 @@ import {
   BookOpen,
   Upload,
   LogOut,
+  FileBarChart,
+  Scale,
+  PieChart,
 } from 'lucide-react'
 
 const nav = [
   { to: '/', label: 'Painel', icon: LayoutDashboard },
+  { to: '/dre', label: 'DRE Gerencial', icon: FileBarChart },
+  { to: '/previsto-realizado', label: 'Previsto x Realizado', icon: Scale },
+  { to: '/rateio', label: 'Rateio por cliente', icon: PieChart },
   { to: '/lancamentos', label: 'Lançamentos', icon: ArrowLeftRight },
   { to: '/contas-a-receber', label: 'A Receber', icon: TrendingUp },
   { to: '/contas-a-pagar', label: 'A Pagar', icon: CreditCard },
