@@ -23,6 +23,7 @@ const nav = [
   { to: '/contas-a-receber', label: 'A Receber', icon: TrendingUp },
   { to: '/contas-a-pagar', label: 'A Pagar', icon: CreditCard },
   { to: '/importar-extrato', label: 'Importar extrato', icon: Upload },
+  { to: '/minha-empresa', label: 'Minha empresa', icon: BookOpen },
   { to: '/cadastros', label: 'Cadastros', icon: BookOpen },
 ]
 

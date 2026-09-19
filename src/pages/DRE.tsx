@@ -17,6 +17,7 @@ import { getPlanoContas, PlanoConta } from '@/services/planoContas'
 import { getClientes, Cliente } from '@/services/clientes'
 import { calcularDRE, calcularDREPorCliente, DRE } from '@/lib/dre'
 import { useAuth } from '@/hooks/use-auth'
+import { getCnpjs, Cnpj } from '@/services/cnpjs'
 import {
   createFechamento,
   updateFechamento,
@@ -48,6 +49,8 @@ export default function DREPage() {
   const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
+  const [cnpjs, setCnpjs] = useState<Cnpj[]>([])
+  const [filtroCnpj, setFiltroCnpj] = useState('todos')
   const [fechamento, setFechamento] = useState<Fechamento | null>(null)
   const [loading, setLoading] = useState(true)
   const [mes, setMes] = useState(new Date().toISOString().slice(0, 7))
@@ -56,11 +59,12 @@ export default function DREPage() {
   const [salvo, setSalvo] = useState(false)
 
   useEffect(() => {
-    Promise.all([getLancamentos({ sort: 'data' }), getPlanoContas(), getClientes()])
-      .then(([l, pc, cl]) => {
+    Promise.all([getLancamentos({ sort: 'data' }), getPlanoContas(), getClientes(), getCnpjs()])
+      .then(([l, pc, cl, cs]) => {
         setLancamentos(l as any)
         setCategorias(pc as any)
         setClientes(cl as any)
+        setCnpjs(cs as any)
       })
       .finally(() => setLoading(false))
   }, [])
@@ -79,8 +83,11 @@ export default function DREPage() {
   }, [mes])
 
   const doMes = useMemo(
-    () => lancamentos.filter((l) => l.data.slice(0, 7) === mes),
-    [lancamentos, mes],
+    () =>
+      lancamentos.filter(
+        (l) => l.data.slice(0, 7) === mes && (filtroCnpj === 'todos' || l.cnpj === filtroCnpj),
+      ),
+    [lancamentos, mes, filtroCnpj],
   )
 
   const dre = useMemo(() => calcularDRE(doMes, categorias), [doMes, categorias])
@@ -160,6 +167,22 @@ export default function DREPage() {
           <p className="text-sm text-muted-foreground">Demonstrativo de resultado do mês</p>
         </div>
         <div className="flex gap-2 items-end">
+          <div className="space-y-1.5">
+            <Label className="text-xs">CNPJ</Label>
+            <Select value={filtroCnpj} onValueChange={setFiltroCnpj}>
+              <SelectTrigger className="w-52">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os CNPJs</SelectItem>
+                {cnpjs.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.apelido || c.razao_social}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="space-y-1.5">
             <Label className="text-xs">Mês</Label>
             <Input

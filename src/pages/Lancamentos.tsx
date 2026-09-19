@@ -37,6 +37,8 @@ export default function Lancamentos() {
   const [items, setItems] = useState<Lancamento[]>([])
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
+  const [cnpjs, setCnpjs] = useState<Cnpj[]>([])
+  const [contas, setContas] = useState<ContaBancaria[]>([])
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [filtroMes, setFiltroMes] = useState(new Date().toISOString().slice(0, 7))
@@ -49,19 +51,25 @@ export default function Lancamentos() {
   const [tipo, setTipo] = useState('saida')
   const [categoria, setCategoria] = useState('')
   const [cliente, setCliente] = useState('')
+  const [cnpj, setCnpj] = useState('')
+  const [conta, setConta] = useState('')
   const [saving, setSaving] = useState(false)
   const [erro, setErro] = useState('')
 
   const loadData = async () => {
     try {
-      const [l, pc, cl] = await Promise.all([
+      const [l, pc, cl, cs, cts] = await Promise.all([
         getLancamentos({ sort: '-data,-created', expand: 'categoria,cliente' }),
         getPlanoContas(),
         getClientes(),
+        getCnpjs(),
+        getContasBancarias(),
       ])
       setItems(l as any)
       setCategorias(pc as any)
       setClientes(cl as any)
+      setCnpjs(cs as any)
+      setContas(cts as any)
     } finally {
       setLoading(false)
     }
@@ -109,6 +117,8 @@ export default function Lancamentos() {
         tipo: tipo as 'entrada' | 'saida',
         categoria: categoria || undefined,
         cliente: cliente || undefined,
+        cnpj: cnpj || undefined,
+        conta: conta || undefined,
         origem: 'manual',
         conciliado: false,
         owner: ownerId,
