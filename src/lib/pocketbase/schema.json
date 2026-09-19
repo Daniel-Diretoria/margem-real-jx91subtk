@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T19:24:14.813Z",
+  "generatedAt": "2026-09-19T19:44:15.610Z",
   "collections": [
     {
       "name": "users",
@@ -55,7 +55,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },
@@ -139,7 +139,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },
@@ -205,7 +205,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },
@@ -294,7 +294,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },
@@ -394,7 +394,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },
@@ -478,7 +478,7 @@
       "apiRules": {
         "list": "@request.auth.id != '' && owner = @request.auth.id",
         "view": "@request.auth.id != '' && owner = @request.auth.id",
-        "create": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && @request.body.owner = @request.auth.id",
         "update": "@request.auth.id != '' && owner = @request.auth.id",
         "delete": "@request.auth.id != '' && owner = @request.auth.id"
       },

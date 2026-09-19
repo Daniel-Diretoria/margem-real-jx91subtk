@@ -43,6 +43,8 @@ const LINHAS_DRE = [
 ]
 
 export default function Cadastros() {
+  const { user } = useAuth()
+  const ownerId = user?.id
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [promotores, setPromotores] = useState<Promotor[]>([])
@@ -84,20 +86,33 @@ export default function Cadastros() {
         </TabsList>
 
         <TabsContent value="plano">
-          <PlanoTab categorias={categorias} reload={loadData} />
+          <PlanoTab categorias={categorias} reload={loadData} ownerId={ownerId} />
         </TabsContent>
         <TabsContent value="clientes">
-          <ClientesTab clientes={clientes} reload={loadData} />
+          <ClientesTab clientes={clientes} reload={loadData} ownerId={ownerId} />
         </TabsContent>
         <TabsContent value="promotores">
-          <PromotoresTab promotores={promotores} clientes={clientes} reload={loadData} />
+          <PromotoresTab
+            promotores={promotores}
+            clientes={clientes}
+            reload={loadData}
+            ownerId={ownerId}
+          />
         </TabsContent>
       </Tabs>
     </div>
   )
 }
 
-function PlanoTab({ categorias, reload }: { categorias: PlanoConta[]; reload: () => void }) {
+function PlanoTab({
+  categorias,
+  reload,
+  ownerId,
+}: {
+  categorias: PlanoConta[]
+  reload: () => void
+  ownerId?: string
+}) {
   const [open, setOpen] = useState(false)
   const [nome, setNome] = useState('')
   const [tipo, setTipo] = useState('despesa')
@@ -116,7 +131,14 @@ function PlanoTab({ categorias, reload }: { categorias: PlanoConta[]; reload: ()
     }
     setSaving(true)
     try {
-      await createPlanoConta({ nome, tipo: tipo as any, categoria, subcategoria, linha_dre: linha })
+      await createPlanoConta({
+        nome,
+        tipo: tipo as any,
+        categoria,
+        subcategoria,
+        linha_dre: linha,
+        owner: ownerId,
+      })
       setOpen(false)
       setNome('')
       setCategoria('')
@@ -259,7 +281,15 @@ function PlanoTab({ categorias, reload }: { categorias: PlanoConta[]; reload: ()
   )
 }
 
-function ClientesTab({ clientes, reload }: { clientes: Cliente[]; reload: () => void }) {
+function ClientesTab({
+  clientes,
+  reload,
+  ownerId,
+}: {
+  clientes: Cliente[]
+  reload: () => void
+  ownerId?: string
+}) {
   const [open, setOpen] = useState(false)
   const [nome, setNome] = useState('')
   const [contato, setContato] = useState('')
@@ -275,7 +305,7 @@ function ClientesTab({ clientes, reload }: { clientes: Cliente[]; reload: () => 
     }
     setSaving(true)
     try {
-      await createCliente({ nome, contato, ativo: true })
+      await createCliente({ nome, contato, ativo: true, owner: ownerId })
       setOpen(false)
       setNome('')
       setContato('')
@@ -409,6 +439,7 @@ function PromotoresTab({
         beneficios: Number(beneficios) || 0,
         cliente: cliente || undefined,
         ativo: true,
+        owner: ownerId,
       })
       setOpen(false)
       setNome('')

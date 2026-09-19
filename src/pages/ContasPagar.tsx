@@ -31,6 +31,8 @@ import { Plus, Check } from 'lucide-react'
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
 export default function ContasPagar() {
+  const { user } = useAuth()
+  const ownerId = user?.id
   const [items, setItems] = useState<ContaPagar[]>([])
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [open, setOpen] = useState(false)
@@ -92,6 +94,7 @@ export default function ContasPagar() {
         vencimento,
         categoria: categoria || undefined,
         status: 'previsto',
+        owner: ownerId,
       })
       setOpen(false)
       setDescricao('')

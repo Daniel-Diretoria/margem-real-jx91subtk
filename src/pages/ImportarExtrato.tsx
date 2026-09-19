@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { createLancamento } from '@/services/lancamentos'
 import { getPlanoContas, PlanoConta } from '@/services/planoContas'
 import { getClientes, Cliente } from '@/services/clientes'
+import { useAuth } from '@/hooks/use-auth'
 import { Upload, FileText, X } from 'lucide-react'
 
 interface LinhaExtrato {
@@ -75,6 +76,8 @@ function parseArquivo(texto: string): LinhaExtrato[] {
 }
 
 export default function ImportarExtrato() {
+  const { user } = useAuth()
+  const ownerId = user?.id
   const [linhas, setLinhas] = useState<LinhaExtrato[]>([])
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -128,6 +131,7 @@ export default function ImportarExtrato() {
           cliente: cliPorLinha[i] || undefined,
           origem: 'extrato',
           conciliado: true,
+          owner: ownerId,
         })
         ok++
       } catch {

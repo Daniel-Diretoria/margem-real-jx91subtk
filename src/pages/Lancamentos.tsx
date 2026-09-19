@@ -31,6 +31,8 @@ import { Plus, Trash2 } from 'lucide-react'
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
 export default function Lancamentos() {
+  const { user } = useAuth()
+  const ownerId = user?.id
   const [items, setItems] = useState<Lancamento[]>([])
   const [categorias, setCategorias] = useState<PlanoConta[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -108,6 +110,7 @@ export default function Lancamentos() {
         cliente: cliente || undefined,
         origem: 'manual',
         conciliado: false,
+        owner: ownerId,
       })
       setOpen(false)
       setDescricao('')

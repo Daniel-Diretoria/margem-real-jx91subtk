@@ -31,6 +31,8 @@ import { Plus, Check } from 'lucide-react'
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
 export default function ContasReceber() {
+  const { user } = useAuth()
+  const ownerId = user?.id
   const [items, setItems] = useState<ContaReceber[]>([])
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [open, setOpen] = useState(false)
@@ -91,6 +93,7 @@ export default function ContasReceber() {
         valor: Number(valor),
         vencimento,
         status: 'previsto',
+        owner: ownerId,
       })
       setOpen(false)
       setDescricao('')
