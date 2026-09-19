@@ -42,20 +42,20 @@ export default function Index() {
   const mesAtual = hoje.slice(0, 7)
 
   const resumo = useMemo(() => {
-    const doMes = lancamentos.filter((l) => monthKey(l.data) === mesAtual)
+    const doMes = lancamentos.filter((l) => monthKey(l.data.slice(0, 10)) === mesAtual)
     const entradas = doMes
       .filter((l) => l.tipo === 'entrada')
       .reduce((s, l) => s + Number(l.valor), 0)
     const saidas = doMes.filter((l) => l.tipo === 'saida').reduce((s, l) => s + Number(l.valor), 0)
     const receberVencido = receber
-      .filter((c) => c.status === 'previsto' && c.vencimento < hoje)
+      .filter((c) => c.status === 'previsto' && c.vencimento.slice(0, 10) < hoje)
       .reduce((s, c) => s + Number(c.valor), 0)
     const pagarSemana = pagar
       .filter((c) => {
         if (c.status !== 'previsto') return false
         const limite = new Date()
         limite.setDate(limite.getDate() + 7)
-        return c.vencimento <= limite.toISOString().slice(0, 10)
+        return c.vencimento.slice(0, 10) <= limite.toISOString().slice(0, 10)
       })
       .reduce((s, c) => s + Number(c.valor), 0)
     return { entradas, saidas, saldo: entradas - saidas, receberVencido, pagarSemana }
@@ -112,7 +112,7 @@ export default function Index() {
                   <div>
                     <div className="font-medium">{l.descricao}</div>
                     <div className="text-xs text-muted-foreground">
-                      {new Date(l.data + 'T00:00:00').toLocaleDateString('pt-BR')}
+                      {new Date(l.data.slice(0, 10) + 'T00:00:00').toLocaleDateString('pt-BR')}
                       {l.expand?.categoria ? ` · ${l.expand.categoria.nome}` : ''}
                     </div>
                   </div>

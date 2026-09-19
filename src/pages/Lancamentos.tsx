@@ -303,7 +303,7 @@ export default function Lancamentos() {
                   {filtrados.map((l) => (
                     <tr key={l.id} className="border-b last:border-0">
                       <td className="py-2 pr-4 whitespace-nowrap">
-                        {new Date(l.data + 'T00:00:00').toLocaleDateString('pt-BR')}
+                        {new Date(l.data.slice(0, 10) + 'T00:00:00').toLocaleDateString('pt-BR')}
                       </td>
                       <td className="py-2 pr-4">{l.descricao}</td>
                       <td className="py-2 pr-4 text-muted-foreground">

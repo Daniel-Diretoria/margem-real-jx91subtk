@@ -72,7 +72,7 @@ export default function ContasPagar() {
 
   const resumo = useMemo(() => {
     const previstos = items.filter((c) => c.status === 'previsto')
-    const semana = previstos.filter((c) => c.vencimento <= limiteStr)
+    const semana = previstos.filter((c) => c.vencimento.slice(0, 10) <= limiteStr)
     return {
       total: previstos.reduce((s, c) => s + Number(c.valor), 0),
       semana: semana.reduce((s, c) => s + Number(c.valor), 0),
@@ -224,7 +224,9 @@ export default function ContasPagar() {
                     .map((c) => (
                       <tr key={c.id} className="border-b last:border-0">
                         <td className="py-2 pr-4 whitespace-nowrap">
-                          {new Date(c.vencimento + 'T00:00:00').toLocaleDateString('pt-BR')}
+                          {new Date(c.vencimento.slice(0, 10) + 'T00:00:00').toLocaleDateString(
+                            'pt-BR',
+                          )}
                         </td>
                         <td className="py-2 pr-4">{c.descricao}</td>
                         <td className="py-2 pr-4 text-muted-foreground">
@@ -238,7 +240,7 @@ export default function ContasPagar() {
                             <Badge variant="outline" className="text-green-600 border-green-600">
                               Pago
                             </Badge>
-                          ) : c.vencimento < hoje ? (
+                          ) : c.vencimento.slice(0, 10) < hoje ? (
                             <Badge variant="destructive">Vencido</Badge>
                           ) : (
                             <Badge variant="secondary">Previsto</Badge>

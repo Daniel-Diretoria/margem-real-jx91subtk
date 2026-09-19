@@ -69,8 +69,8 @@ export default function ContasReceber() {
 
   const resumo = useMemo(() => {
     const previstos = items.filter((c) => c.status === 'previsto')
-    const vencidos = previstos.filter((c) => c.vencimento < hoje)
-    const aVencer = previstos.filter((c) => c.vencimento >= hoje)
+    const vencidos = previstos.filter((c) => c.vencimento.slice(0, 10) < hoje)
+    const aVencer = previstos.filter((c) => c.vencimento.slice(0, 10) >= hoje)
     return {
       total: previstos.reduce((s, c) => s + Number(c.valor), 0),
       vencido: vencidos.reduce((s, c) => s + Number(c.valor), 0),
@@ -225,7 +225,9 @@ export default function ContasReceber() {
                     .map((c) => (
                       <tr key={c.id} className="border-b last:border-0">
                         <td className="py-2 pr-4 whitespace-nowrap">
-                          {new Date(c.vencimento + 'T00:00:00').toLocaleDateString('pt-BR')}
+                          {new Date(c.vencimento.slice(0, 10) + 'T00:00:00').toLocaleDateString(
+                            'pt-BR',
+                          )}
                         </td>
                         <td className="py-2 pr-4">{c.descricao}</td>
                         <td className="py-2 pr-4 text-muted-foreground">
@@ -239,7 +241,7 @@ export default function ContasReceber() {
                             <Badge variant="outline" className="text-green-600 border-green-600">
                               Recebido
                             </Badge>
-                          ) : c.vencimento < hoje ? (
+                          ) : c.vencimento.slice(0, 10) < hoje ? (
                             <Badge variant="destructive">Vencido</Badge>
                           ) : (
                             <Badge variant="secondary">Previsto</Badge>
