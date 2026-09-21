@@ -22,12 +22,13 @@ import {
   getContasPagar,
   createContaPagar,
   updateContaPagar,
+  deleteContaPagar,
   ContaPagar,
 } from '@/services/contasPagar'
 import { getPlanoContas, PlanoConta } from '@/services/planoContas'
 import { useRealtime } from '@/hooks/use-realtime'
 import { useAuth } from '@/hooks/use-auth'
-import { Plus, Check } from 'lucide-react'
+import { Plus, Check, Trash2 } from 'lucide-react'
 
 const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -247,11 +248,23 @@ export default function ContasPagar() {
                           )}
                         </td>
                         <td className="py-2 text-right">
-                          {c.status === 'previsto' && (
-                            <Button variant="ghost" size="sm" onClick={() => marcarPago(c)}>
-                              <Check className="h-4 w-4 text-green-600" />
+                          <div className="flex justify-end gap-1">
+                            {c.status === 'previsto' && (
+                              <Button variant="ghost" size="sm" onClick={() => marcarPago(c)}>
+                                <Check className="h-4 w-4 text-green-600" />
+                              </Button>
+                            )}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={async () => {
+                                await deleteContaPagar(c.id)
+                                loadData()
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4 text-muted-foreground" />
                             </Button>
-                          )}
+                          </div>
                         </td>
                       </tr>
                     ))}
