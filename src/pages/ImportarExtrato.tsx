@@ -65,7 +65,11 @@ function parseArquivo(texto: string): LinhaExtrato[] {
       const [dd, mm, yyyy] = d.split('/')
       data = `${yyyy}-${mm}-${dd}`
     }
-    const valor = parseFloat(val.replace(/\./g, '').replace(',', '.').replace('R$', '').trim())
+    const clean = val.replace('R$', '').trim()
+    // aceita 1.250,00 (BR) e 12500.00 (US)
+    const valor = clean.includes(',')
+      ? parseFloat(clean.replace(/\./g, '').replace(',', '.'))
+      : parseFloat(clean)
     if (isNaN(valor)) continue
     linhas.push({
       data,
