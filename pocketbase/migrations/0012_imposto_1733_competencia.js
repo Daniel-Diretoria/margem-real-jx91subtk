@@ -27,7 +27,7 @@ migrate(
         l.getString('descricao').startsWith('Faturamento agosto - ')
       ) {
         const cli = l.getString('cliente')
-        brutoPorCliente[cli] = Number(l.getNumber('valor'))
+        brutoPorCliente[cli] = Number(l.get('valor'))
       }
     }
 
