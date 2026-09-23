@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T20:12:51.907Z",
+  "generatedAt": "2026-09-23T19:16:21.905Z",
   "collections": [
     {
       "name": "users",
@@ -196,6 +196,12 @@
         },
         {
           "name": "dias_atendimento",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pct_rateio",
           "type": "number",
           "required": false,
           "system": false
