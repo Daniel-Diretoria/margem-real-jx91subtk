@@ -26,7 +26,7 @@ migrate(
     ]
     const cat = {}
     const refresh = () => {
-      cat = {}
+      for (const k in cat) delete cat[k]
       const plano = app.findRecordsByFilter(
         'plano_contas',
         'owner = "' + admin.id + '"',
