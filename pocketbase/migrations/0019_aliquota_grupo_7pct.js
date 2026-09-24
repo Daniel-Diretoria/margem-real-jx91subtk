@@ -28,10 +28,10 @@ migrate(
         0,
       )
       if (receitas.length === 0) continue
-      const bruto = receitas[0].getDouble('valor')
+      const bruto = receitas[0].getFloat('valor')
       const novo = Math.round(bruto * 0.07 * 100) / 100
       const clienteNome = imp.getString('descricao').split(' - ').slice(1).join(' - ')
-      log.push(clienteNome + ': ' + imp.getDouble('valor') + ' -> ' + novo)
+      log.push(clienteNome + ': ' + imp.getFloat('valor') + ' -> ' + novo)
       imp.set('valor', novo)
       imp.set('descricao', 'Impostos 7% - ' + clienteNome)
       app.save(imp)
