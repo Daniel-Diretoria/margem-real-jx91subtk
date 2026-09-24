@@ -29,19 +29,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
       "indexes": [
@@ -78,10 +73,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "receita",
-            "despesa"
-          ]
+          "selectValues": ["receita", "despesa"]
         },
         {
           "name": "categoria",
@@ -114,24 +106,17 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_plano_owner ON plano_contas (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_plano_owner ON plano_contas (owner)"]
     },
     {
       "name": "clientes",
@@ -180,19 +165,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         },
         {
           "name": "dias_atendimento",
@@ -207,9 +187,7 @@
           "system": false
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_clientes_owner ON clientes (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_clientes_owner ON clientes (owner)"]
     },
     {
       "name": "promotores",
@@ -240,10 +218,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "promotor",
-            "lider"
-          ]
+          "selectValues": ["promotor", "lider"]
         },
         {
           "name": "salario",
@@ -281,19 +256,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         },
         {
           "name": "cnpj",
@@ -303,9 +273,7 @@
           "collectionRef": "cnpjs"
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_promotores_owner ON promotores (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_promotores_owner ON promotores (owner)"]
     },
     {
       "name": "lancamentos",
@@ -348,10 +316,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "entrada",
-            "saida"
-          ]
+          "selectValues": ["entrada", "saida"]
         },
         {
           "name": "categoria",
@@ -372,10 +337,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "manual",
-            "extrato"
-          ]
+          "selectValues": ["manual", "extrato"]
         },
         {
           "name": "conciliado",
@@ -388,19 +350,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         },
         {
           "name": "cnpj",
@@ -417,9 +374,7 @@
           "collectionRef": "contas_bancarias"
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_lanc_owner_data ON lancamentos (owner, data)"
-      ]
+      "indexes": ["CREATE INDEX idx_lanc_owner_data ON lancamentos (owner, data)"]
     },
     {
       "name": "contas_receber",
@@ -469,11 +424,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "previsto",
-            "realizado",
-            "cancelado"
-          ]
+          "selectValues": ["previsto", "realizado", "cancelado"]
         },
         {
           "name": "data_recebimento",
@@ -486,19 +437,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         },
         {
           "name": "cnpj",
@@ -508,9 +454,7 @@
           "collectionRef": "cnpjs"
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_receber_owner_venc ON contas_receber (owner, vencimento)"
-      ]
+      "indexes": ["CREATE INDEX idx_receber_owner_venc ON contas_receber (owner, vencimento)"]
     },
     {
       "name": "contas_pagar",
@@ -553,11 +497,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "previsto",
-            "realizado",
-            "cancelado"
-          ]
+          "selectValues": ["previsto", "realizado", "cancelado"]
         },
         {
           "name": "categoria",
@@ -577,19 +517,14 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         },
         {
           "name": "cnpj",
@@ -599,9 +534,7 @@
           "collectionRef": "cnpjs"
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_pagar_owner_venc ON contas_pagar (owner, vencimento)"
-      ]
+      "indexes": ["CREATE INDEX idx_pagar_owner_venc ON contas_pagar (owner, vencimento)"]
     },
     {
       "name": "fechamentos",
@@ -632,10 +565,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "aberto",
-            "fechado"
-          ]
+          "selectValues": ["aberto", "fechado"]
         },
         {
           "name": "decisao",
@@ -654,24 +584,17 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
-      "indexes": [
-        "CREATE UNIQUE INDEX idx_fech_owner_mes ON fechamentos (owner, mes)"
-      ]
+      "indexes": ["CREATE UNIQUE INDEX idx_fech_owner_mes ON fechamentos (owner, mes)"]
     },
     {
       "name": "cnpjs",
@@ -720,24 +643,17 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_cnpjs_owner ON cnpjs (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_cnpjs_owner ON cnpjs (owner)"]
     },
     {
       "name": "contas_bancarias",
@@ -768,11 +684,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": [
-            "conta_corrente",
-            "poupanca",
-            "cartao"
-          ]
+          "selectValues": ["conta_corrente", "poupanca", "cartao"]
         },
         {
           "name": "banco",
@@ -804,24 +716,17 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_contas_owner ON contas_bancarias (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_contas_owner ON contas_bancarias (owner)"]
     },
     {
       "name": "contratos",
@@ -890,24 +795,17 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate"
-          ]
+          "autodateTriggers": ["onCreate"]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": [
-            "onCreate",
-            "onUpdate"
-          ]
+          "autodateTriggers": ["onCreate", "onUpdate"]
         }
       ],
-      "indexes": [
-        "CREATE INDEX idx_contratos_owner ON contratos (owner)"
-      ]
+      "indexes": ["CREATE INDEX idx_contratos_owner ON contratos (owner)"]
     }
   ]
 }
