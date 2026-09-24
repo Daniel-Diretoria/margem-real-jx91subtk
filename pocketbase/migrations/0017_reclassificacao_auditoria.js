@@ -14,28 +14,41 @@ migrate(
   (app) => {
     const admin = app.findAuthRecordByEmail('_pb_users_auth_', 'daniel@diretoriapromocoes.com.br')
 
-    // --- cria categoria Multas e penalidades se não existir ---
-    let catMultas = ''
-    const plano = app.findRecordsByFilter('plano_contas', 'owner = "' + admin.id + '"', '', 500, 0)
-    for (const p of plano) {
-      if (p.getString('nome') === 'Multas e penalidades') catMultas = p.id
+    // --- garante que todas as categorias de destino existam ---
+    const DEFAULTS = [
+      ['Encargos trabalhistas', 'Pessoal', 'Encargos', 'custos'],
+      ['Salários - campo', 'Pessoal', 'Salários', 'custos'],
+      ['Fornecedores/administrativo', 'Administrativo', 'Fornecedores', 'despesas_operacionais'],
+      ['Tarifas bancárias', 'Financeiro', 'Tarifas', 'juros'],
+      ['Juros de empréstimo', 'Financeiro', 'Juros', 'juros'],
+      ['Aluguel e utilities', 'Administrativo', 'Ocupação', 'despesas_operacionais'],
+      ['Multas e penalidades', 'Administrativo', 'Multas', 'despesas_operacionais'],
+    ]
+    const cat = {}
+    const refresh = () => {
+      cat = {}
+      const plano = app.findRecordsByFilter(
+        'plano_contas',
+        'owner = "' + admin.id + '"',
+        '',
+        500,
+        0,
+      )
+      for (const p of plano) cat[p.getString('nome')] = p.id
     }
-    if (!catMultas) {
+    refresh()
+    for (const [nome, categoria, subcategoria, linha] of DEFAULTS) {
+      if (cat[nome]) continue
       const r = new Record(app.findCollectionByNameOrId('plano_contas'))
       r.set('owner', admin.id)
-      r.set('nome', 'Multas e penalidades')
+      r.set('nome', nome)
       r.set('tipo', 'despesa')
-      r.set('categoria', 'Administrativo')
-      r.set('subcategoria', 'Multas')
-      r.set('linha_dre', 'despesas_operacionais')
+      r.set('categoria', categoria)
+      r.set('subcategoria', subcategoria)
+      r.set('linha_dre', linha)
       app.save(r)
-      catMultas = app.findFirstRecordByData('plano_contas', 'nome', 'Multas e penalidades').id
+      refresh()
     }
-
-    // --- mapa de categorias ---
-    const cat = {}
-    const plano2 = app.findRecordsByFilter('plano_contas', 'owner = "' + admin.id + '"', '', 500, 0)
-    for (const p of plano2) cat[p.getString('nome')] = p.id
 
     const ALVO = {
       encargos: cat['Encargos trabalhistas'],
@@ -44,7 +57,7 @@ migrate(
       tarifas: cat['Tarifas bancárias'],
       juros: cat['Juros de empréstimo'],
       aluguel: cat['Aluguel e utilities'],
-      multas: catMultas,
+      multas: cat['Multas e penalidades'],
     }
 
     // [trecho do memo, destino] — ordem importa (primeiro match vence)
@@ -84,7 +97,7 @@ migrate(
       }
       // D.V.T. PIX do dia 28 = condomínio; o boleto DVT 10/08 fica em fornecedores
       if (destino === 'aluguel' && l.getString('data') !== '2026-08-28') destino = ''
-      if (destino && l.getString('categoria') !== destino) {
+      if (destino && ALVO[destKey(destino)] && l.getString('categoria') !== destino) {
         l.set('categoria', destino)
         app.save(l)
         n++
@@ -96,3 +109,16 @@ migrate(
     console.log('down: reclassificação 0017 — noop (categorias anteriores mantidas).')
   },
 )
+
+function destKey(destino) {
+  const mapa = {
+    encargos: 'encargos',
+    campo: 'campo',
+    forn: 'forn',
+    tarifas: 'tarifas',
+    juros: 'juros',
+    aluguel: 'aluguel',
+    multas: 'multas',
+  }
+  return mapa[destino] || ''
+}
