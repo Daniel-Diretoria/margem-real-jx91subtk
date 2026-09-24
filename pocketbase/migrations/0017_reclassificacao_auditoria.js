@@ -86,6 +86,7 @@ migrate(
       0,
     )
     let n = 0
+    const falhas = []
     for (const l of lans) {
       const memo = (l.getString('descricao') || '').toUpperCase()
       let destino = ''
@@ -97,11 +98,29 @@ migrate(
       }
       // D.V.T. PIX do dia 28 = condomínio; o boleto DVT 10/08 fica em fornecedores
       if (destino === 'aluguel' && l.getString('data') !== '2026-08-28') destino = ''
-      if (destino && ALVO[destKey(destino)] && l.getString('categoria') !== destino) {
-        l.set('categoria', destino)
+      const alvoId = destino ? ALVO[destino] : ''
+      if (!destino || !alvoId) continue
+      if (l.getString('categoria') === alvoId) continue
+      try {
+        l.set('categoria', alvoId)
         app.save(l)
         n++
+      } catch (e) {
+        falhas.push(
+          l.id +
+            ' [' +
+            l.getString('data') +
+            '] alvo=' +
+            destino +
+            ':' +
+            alvoId +
+            ' erro=' +
+            (e && e.message ? e.message : String(e)),
+        )
       }
+    }
+    if (falhas.length > 0) {
+      throw new Error('0017 falhas (' + falhas.length + '): ' + falhas.join(' | '))
     }
     console.log('Lançamentos reclassificados: ' + n)
   },
@@ -109,16 +128,3 @@ migrate(
     console.log('down: reclassificação 0017 — noop (categorias anteriores mantidas).')
   },
 )
-
-function destKey(destino) {
-  const mapa = {
-    encargos: 'encargos',
-    campo: 'campo',
-    forn: 'forn',
-    tarifas: 'tarifas',
-    juros: 'juros',
-    aluguel: 'aluguel',
-    multas: 'multas',
-  }
-  return mapa[destino] || ''
-}
