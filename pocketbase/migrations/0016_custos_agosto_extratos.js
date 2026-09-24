@@ -29,8 +29,8 @@ migrate(
       r.set('categoria', 'Administrativo')
       r.set('subcategoria', 'Fornecedores')
       r.set('linha_dre', 'despesas_operacionais')
-      const saved = app.save(r)
-      catForn = saved.id
+      app.save(r)
+      catForn = app.findFirstRecordByData('plano_contas', 'nome', 'Fornecedores/administrativo').id
     }
 
     const contaId = {}
