@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T22:32:00.230Z",
+  "generatedAt": "2026-09-29T17:17:57.422Z",
   "collections": [
     {
       "name": "users",
@@ -106,7 +106,8 @@
             "custos",
             "despesas_operacionais",
             "juros",
-            "outras"
+            "outras",
+            "excluido"
           ]
         },
         {
