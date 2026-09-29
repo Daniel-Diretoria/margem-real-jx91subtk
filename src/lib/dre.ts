@@ -45,6 +45,7 @@ export function calcularDRE(
     despesas_operacionais: 0,
     juros: 0,
     outras: 0,
+    excluido: 0,
   }
 
   for (const l of lancamentos) {
@@ -81,6 +82,7 @@ export function calcularDRE(
   const ebitda = lucroBruto - despesasOperacionais
   const juros = fmt(totais.juros)
   const outras = fmt(totais.outras)
+  const excluido = fmt(totais.excluido)
   const lucroLiquido = ebitda - juros - outras
   const margemPct = receitaBruta > 0 ? (lucroLiquido / receitaBruta) * 100 : 0
 
@@ -105,6 +107,7 @@ export function calcularDRE(
     juros,
     resultadoFinanceiro: -juros,
     outras,
+    excluido,
     lucroLiquido,
     margemPct,
     linhas: [
@@ -122,6 +125,7 @@ export function calcularDRE(
       { nome: '(−) Juros', valor: -juros, filhos: bloco('juros') },
       { nome: '(−) Outras', valor: -outras, filhos: bloco('outras') },
       { nome: '= Lucro líquido', valor: lucroLiquido },
+      { nome: '(fora da DRE) Sócios e garantias', valor: excluido, filhos: bloco('excluido') },
     ],
   }
 }
