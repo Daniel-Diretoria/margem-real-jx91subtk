@@ -4,7 +4,11 @@
 migrate(
   (app) => {
     // 1. coleção lojas
-    if (!app.findCollectionByNameOrId('lojas')) {
+    let colExistente = null
+    try {
+      colExistente = app.findCollectionByNameOrId('lojas')
+    } catch (_) {}
+    if (!colExistente) {
       const usersId = '_pb_users_auth_'
       const ownerRule = "@request.auth.id != '' && owner = @request.auth.id"
       const lojas = new Collection({
