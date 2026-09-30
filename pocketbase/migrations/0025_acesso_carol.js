@@ -7,9 +7,8 @@ migrate(
     const users = app.findCollectionByNameOrId('_pb_users_auth_')
     if (!users.fields.getByName('papel')) {
       users.fields.add(
-        new Field({
+        new SelectField({
           name: 'papel',
-          type: 'select',
           values: ['dono', 'equipe'],
           maxSelect: 1,
         }),
@@ -23,12 +22,13 @@ migrate(
       carol = app.findAuthRecordByEmail('_pb_users_auth_', 'carol@diretoriapromocoes.com.br')
     } catch (_) {}
     if (!carol) {
-      carol = new Record(app.findCollectionByNameOrId('_pb_users_auth_'))
-      carol.set('email', 'carol@diretoriapromocoes.com.br')
-      carol.set('password', 'Carol@2026')
+      const usersCol = app.findCollectionByNameOrId('_pb_users_auth_')
+      carol = new Record(usersCol)
+      carol.setEmail('carol@diretoriapromocoes.com.br')
+      carol.setPassword('Carol@2026')
+      carol.setVerified(true)
       carol.set('name', 'Carol')
       carol.set('papel', 'equipe')
-      carol.set('verified', true)
       app.save(carol)
     } else {
       if (carol.get('papel') !== 'equipe') {
@@ -37,44 +37,54 @@ migrate(
       }
     }
 
-    // 3. regras: lojas e promotores visíveis/manipuláveis por qualquer usuário logado
+    // 3. regras: lojas e promotores acessíveis a qualquer usuário logado
     const eq = "@request.auth.id != ''"
-    const regras = {
-      lojas: { list: eq, view: eq, create: eq, update: eq, delete: eq },
-      promotores: { list: eq, view: eq, create: eq, update: eq, delete: eq },
-    }
-    for (const [nome, regra] of Object.entries(regras)) {
-      const col = app.findCollectionByNameOrId(nome)
-      col.listRule = regra.list
-      col.viewRule = regra.view
-      col.createRule = regra.create
-      col.updateRule = regra.update
-      col.deleteRule = regra.delete
-      app.save(col)
-    }
+    const lojas = app.findCollectionByNameOrId('lojas')
+    lojas.listRule = eq
+    lojas.viewRule = eq
+    lojas.createRule = eq
+    lojas.updateRule = eq
+    lojas.deleteRule = eq
+    app.save(lojas)
 
-    // 4. garante que os registros existentes ficam com owner = Daniel
+    const prom = app.findCollectionByNameOrId('promotores')
+    prom.listRule = eq
+    prom.viewRule = eq
+    prom.createRule = eq
+    prom.updateRule = eq
+    prom.deleteRule = eq
+    app.save(prom)
+
+    // 4. garante owner = Daniel nos registros existentes sem dono
     const daniel = app.findAuthRecordByEmail('_pb_users_auth_', 'daniel@diretoriapromocoes.com.br')
-    for (const nome of ['lojas', 'promotores']) {
-      const col = app.findCollectionByNameOrId(nome)
-      const registros = app.findRecordsByFilter(col.name, 'owner = "" || owner = null', '', 0, 0)
-      for (const r of registros) {
-        r.set('owner', daniel.id)
-        app.save(r)
-      }
+    const lojasVagas = app.findRecordsByFilter('lojas', 'owner = ""', '', 1000, 0)
+    for (const r of lojasVagas) {
+      r.set('owner', daniel.id)
+      app.save(r)
+    }
+    const promVagos = app.findRecordsByFilter('promotores', 'owner = ""', '', 1000, 0)
+    for (const r of promVagos) {
+      r.set('owner', daniel.id)
+      app.save(r)
     }
   },
   (app) => {
-    // rollback: volta regras owner-only e remove acesso
+    // rollback: volta regras owner-only
     const ownerRule = "@request.auth.id != '' && owner = @request.auth.id"
-    for (const nome of ['lojas', 'promotores']) {
-      const col = app.findCollectionByNameOrId(nome)
-      col.listRule = ownerRule
-      col.viewRule = ownerRule
-      col.createRule = ownerRule
-      col.updateRule = ownerRule
-      col.deleteRule = ownerRule
-      app.save(col)
-    }
+    const lojas = app.findCollectionByNameOrId('lojas')
+    lojas.listRule = ownerRule
+    lojas.viewRule = ownerRule
+    lojas.createRule = ownerRule
+    lojas.updateRule = ownerRule
+    lojas.deleteRule = ownerRule
+    app.save(lojas)
+
+    const prom = app.findCollectionByNameOrId('promotores')
+    prom.listRule = ownerRule
+    prom.viewRule = ownerRule
+    prom.createRule = ownerRule
+    prom.updateRule = ownerRule
+    prom.deleteRule = ownerRule
+    app.save(prom)
   },
 )
