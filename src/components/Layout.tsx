@@ -12,6 +12,7 @@ import {
   FileBarChart,
   Scale,
   PieChart,
+  MapPin,
 } from 'lucide-react'
 
 const nav = [
@@ -24,6 +25,7 @@ const nav = [
   { to: '/contas-a-pagar', label: 'A Pagar', icon: CreditCard },
   { to: '/importar-extrato', label: 'Importar extrato', icon: Upload },
   { to: '/minha-empresa', label: 'Minha empresa', icon: BookOpen },
+  { to: '/lojas', label: 'Lojas', icon: MapPin },
   { to: '/cadastros', label: 'Cadastros', icon: BookOpen },
 ]
 

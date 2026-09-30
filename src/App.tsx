@@ -17,6 +17,7 @@ import DREPage from '@/pages/DRE'
 import PrevistoRealizado from '@/pages/PrevistoRealizado'
 import Rateio from '@/pages/Rateio'
 import MinhaEmpresa from '@/pages/MinhaEmpresa'
+import LojasPage from '@/pages/Lojas'
 import NotFound from '@/pages/NotFound'
 
 // ONLY IMPORT AND RENDER WORKING PAGES, NEVER ADD PLACEHOLDER COMPONENTS OR PAGES IN THIS FILE
@@ -46,6 +47,7 @@ const AppRoutes = () => {
           <Route path="/previsto-realizado" element={<PrevistoRealizado />} />
           <Route path="/rateio" element={<Rateio />} />
           <Route path="/minha-empresa" element={<MinhaEmpresa />} />
+          <Route path="/lojas" element={<LojasPage />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
