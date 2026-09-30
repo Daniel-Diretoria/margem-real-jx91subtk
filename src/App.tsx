@@ -24,7 +24,7 @@ import NotFound from '@/pages/NotFound'
 // AVOID REMOVING ANY CONTEXT PROVIDERS FROM THIS FILE (e.g. TooltipProvider, Toaster, Sonner)
 
 const AppRoutes = () => {
-  const { loading } = useAuth()
+  const { loading, user } = useAuth()
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -37,7 +37,10 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
-          <Route path="/" element={<Index />} />
+          <Route
+            path="/"
+            element={user?.papel === 'equipe' ? <Navigate to="/lojas" replace /> : <Index />}
+          />{' '}
           <Route path="/lancamentos" element={<Lancamentos />} />
           <Route path="/contas-a-receber" element={<ContasReceber />} />
           <Route path="/contas-a-pagar" element={<ContasPagar />} />
