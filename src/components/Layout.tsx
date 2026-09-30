@@ -29,9 +29,17 @@ const nav = [
   { to: '/cadastros', label: 'Cadastros', icon: BookOpen },
 ]
 
+// Papel "equipe" (Carol): só operação — Lojas e cadastro de Promotores.
+// O resto (financeiro) fica com o dono.
+const navEquipe = [
+  { to: '/lojas', label: 'Lojas', icon: MapPin },
+  { to: '/cadastros', label: 'Cadastros', icon: BookOpen },
+]
+
 export default function Layout() {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
+  const itensNav = user?.papel === 'equipe' ? navEquipe : nav
 
   return (
     <div className="flex min-h-screen">
@@ -41,7 +49,7 @@ export default function Layout() {
           <div className="text-xs text-muted-foreground">Consolidação financeira</div>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {nav.map((item) => (
+          {itensNav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -91,7 +99,7 @@ export default function Layout() {
             </Button>
           </div>
           <nav className="mt-2 flex gap-1 overflow-x-auto pb-1">
-            {nav.map((item) => (
+            {itensNav.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}

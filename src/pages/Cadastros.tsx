@@ -53,10 +53,16 @@ export default function Cadastros() {
 
   const loadData = async () => {
     try {
-      const [pc, cl, pr] = await Promise.all([getPlanoContas(), getClientes(), getPromotores()])
-      setCategorias(pc as any)
-      setClientes(cl as any)
-      setPromotores(pr as any)
+      if (user?.papel === 'equipe') {
+        // Carol: sem acesso a plano de contas/clientes (regra owner-only)
+        const pr = await getPromotores()
+        setPromotores(pr as any)
+      } else {
+        const [pc, cl, pr] = await Promise.all([getPlanoContas(), getClientes(), getPromotores()])
+        setCategorias(pc as any)
+        setClientes(cl as any)
+        setPromotores(pr as any)
+      }
     } finally {
       setLoading(false)
     }
@@ -79,19 +85,23 @@ export default function Cadastros() {
         <p className="text-sm text-muted-foreground">Plano de contas, clientes e promotores</p>
       </div>
 
-      <Tabs defaultValue="plano">
+      <Tabs defaultValue={user?.papel === 'equipe' ? 'promotores' : 'plano'}>
         <TabsList>
-          <TabsTrigger value="plano">Plano de contas</TabsTrigger>
-          <TabsTrigger value="clientes">Clientes</TabsTrigger>
+          {user?.papel !== 'equipe' && <TabsTrigger value="plano">Plano de contas</TabsTrigger>}
+          {user?.papel !== 'equipe' && <TabsTrigger value="clientes">Clientes</TabsTrigger>}
           <TabsTrigger value="promotores">Promotores</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="plano">
-          <PlanoTab categorias={categorias} reload={loadData} ownerId={ownerId} />
-        </TabsContent>
-        <TabsContent value="clientes">
-          <ClientesTab clientes={clientes} reload={loadData} ownerId={ownerId} />
-        </TabsContent>
+        {user?.papel !== 'equipe' && (
+          <TabsContent value="plano">
+            <PlanoTab categorias={categorias} reload={loadData} ownerId={ownerId} />
+          </TabsContent>
+        )}
+        {user?.papel !== 'equipe' && (
+          <TabsContent value="clientes">
+            <ClientesTab clientes={clientes} reload={loadData} ownerId={ownerId} />
+          </TabsContent>
+        )}
         <TabsContent value="promotores">
           <PromotoresTab
             promotores={promotores}
