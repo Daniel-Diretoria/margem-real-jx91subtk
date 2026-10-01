@@ -6,6 +6,9 @@ export interface Cliente {
   contato: string
   observacoes: string
   ativo: boolean
+  owner?: string
+  dias_atendimento?: number
+  pct_rateio?: number
 }
 
 export const getClientes = () => pb.collection('clientes').getFullList({ sort: 'nome' })

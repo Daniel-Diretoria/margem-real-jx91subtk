@@ -8,6 +8,8 @@ export interface ContaPagar {
   status: 'previsto' | 'realizado' | 'cancelado'
   categoria: string
   data_pagamento: string
+  owner?: string
+  cnpj?: string
   expand?: { categoria?: any }
 }
 

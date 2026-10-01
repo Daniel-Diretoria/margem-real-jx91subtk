@@ -418,10 +418,12 @@ function PromotoresTab({
   promotores,
   clientes,
   reload,
+  ownerId,
 }: {
   promotores: Promotor[]
   clientes: Cliente[]
   reload: () => void
+  ownerId?: string
 }) {
   const [open, setOpen] = useState(false)
   const [nome, setNome] = useState('')

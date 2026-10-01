@@ -10,6 +10,10 @@ export interface Lancamento {
   cliente: string
   origem: 'manual' | 'extrato'
   conciliado: boolean
+  owner?: string
+  cnpj?: string
+  conta?: string
+  promotor?: string
   expand?: { categoria?: any; cliente?: any }
 }
 

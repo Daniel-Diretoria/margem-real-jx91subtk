@@ -25,6 +25,8 @@ import {
 } from '@/services/lancamentos'
 import { getPlanoContas, PlanoConta } from '@/services/planoContas'
 import { getClientes, Cliente } from '@/services/clientes'
+import { getCnpjs, Cnpj } from '@/services/cnpjs'
+import { getContasBancarias, ContaBancaria } from '@/services/contasBancarias'
 import { useRealtime } from '@/hooks/use-realtime'
 import { useAuth } from '@/hooks/use-auth'
 import { Plus, Trash2 } from 'lucide-react'

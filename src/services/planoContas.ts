@@ -7,6 +7,7 @@ export interface PlanoConta {
   categoria: string
   subcategoria: string
   linha_dre: string
+  owner?: string
 }
 
 export const getPlanoContas = () =>

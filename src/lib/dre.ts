@@ -20,6 +20,7 @@ export interface DRE {
   juros: number
   resultadoFinanceiro: number
   outras: number
+  excluido: number
   lucroLiquido: number
   margemPct: number
   linhas: LinhaDRE[]

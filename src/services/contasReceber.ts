@@ -8,6 +8,8 @@ export interface ContaReceber {
   vencimento: string
   status: 'previsto' | 'realizado' | 'cancelado'
   data_recebimento: string
+  owner?: string
+  cnpj?: string
   expand?: { cliente?: any }
 }
 

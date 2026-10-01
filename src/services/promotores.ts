@@ -9,6 +9,14 @@ export interface Promotor {
   beneficios: number
   cliente: string
   ativo: boolean
+  owner?: string
+  cnpj?: string
+  tipo_vinculo?: 'CLT' | 'MEI' | 'PJ' | 'terceirizado'
+  documento?: string
+  lojas?: string
+  status?: 'ativo' | 'inativo'
+  chave_pix?: string
+  banco?: string
 }
 
 export const getPromotores = () =>
